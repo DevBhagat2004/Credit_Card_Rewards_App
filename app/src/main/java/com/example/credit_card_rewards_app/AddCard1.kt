@@ -8,13 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 
+@Composable
 fun makeRows (rewardCategories: List<String>, rewardValues: List<Int>){
     for((index,category) in rewardCategories.withIndex()){
         Row(){
-            OutlinedTextField(
+            /*OutlinedTextField(
                 value ="",
 
-            )
+            )*/
         }
     }
 }
