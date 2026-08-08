@@ -13,7 +13,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun BestReward( rewardList: List<String>) {
     val cardViewModel: CardViewModel = viewModel()
     val uiState by cardViewModel.state.collectAsStateWithLifecycle()
-    cardViewModel.showCard()
     Column {
         for (reward in rewardList) {
             Button(onClick = { cardViewModel.getBest(reward) }) {

@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun AddCard(rewardCategories: List<String>){
 
-    var rewardValues = remember{
+    val rewardValues = remember{
         mutableStateListOf<String>()
     }
 
