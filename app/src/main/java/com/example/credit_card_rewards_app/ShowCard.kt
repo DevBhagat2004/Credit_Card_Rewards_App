@@ -6,16 +6,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun ShowCard(cardList: List<String>){
+fun ShowCard(){
+    val showCardViewModel: ShowCardViewModel = viewModel()
+    val showCardUIState by showCardViewModel.state.collectAsStateWithLifecycle()
+    showCardViewModel.showCard()
     Column(
         modifier = Modifier
         .fillMaxSize()
     ){
-        for (card in cardList){
+        for (card in showCardUIState.cardList){
             Button(onClick={}){
-                Text(text = card)
+                Text(text = card.name)
             }
         }
     }
