@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [Card::class, Reward::class],
+    entities = [Card::class, Reward::class, RewardNames::class],
     version = 1
 )
 
@@ -36,7 +36,12 @@ abstract class AppDatabase: RoomDatabase() {
 
                             CoroutineScope(Dispatchers.IO).launch{
                                 val database = getDatabase(context)
-                                database.rewardNamesDao.insertNames(setOf("Gas", "Grocery", "Dining", "Online"))
+                                val myList = listOf("Gas", "Grocery", "Dining", "Online")
+
+                                for (myname in myList) {
+                                    val rewardName: RewardNames = RewardNames(name= myname)
+                                    database.rewardNamesDao.insertNames(rewardName)
+                                }
                             }
                         }
                     })

@@ -14,15 +14,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 
 @Composable
-fun AddCard(rewardCategories: List<String>){
+fun AddCard(navController: NavController){
     val addCardViewModel: AddCardViewModel = viewModel()
     val addCardUIState by addCardViewModel.state.collectAsStateWithLifecycle()
 
-    val rewardValues = remember{
-        mutableStateListOf<String>()
-    }
 
     Column (
         modifier = Modifier

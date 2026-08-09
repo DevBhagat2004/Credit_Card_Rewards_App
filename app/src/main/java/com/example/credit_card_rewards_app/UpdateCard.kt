@@ -11,9 +11,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 
 @Composable
-fun UpdateCard(cardId: Int){
+fun UpdateCard(navController: NavController, cardId: Int){
 
     val updateCardViewModel: UpdateCardViewModel = viewModel()
     val updateCardUIState by updateCardViewModel.state.collectAsStateWithLifecycle()

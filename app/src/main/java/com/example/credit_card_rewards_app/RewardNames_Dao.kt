@@ -7,11 +7,8 @@ import androidx.room.Query
 @Dao
 interface RewardNames_Dao {
     @Insert
-    suspend fun insertNames(names: Set<String>)
+    suspend fun insertNames(rewardNames: RewardNames)
 
-    @Insert
-    suspend fun insertName(name: String)
-
-    @Query("SELECT * FROM RewardNames")
+    @Query("SELECT name FROM RewardNames")
     suspend fun getAllRewardNames() : MutableList <String>
 }

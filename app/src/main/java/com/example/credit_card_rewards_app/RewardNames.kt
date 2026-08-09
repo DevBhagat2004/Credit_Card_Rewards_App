@@ -5,5 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class RewardNames(
-    val rewardNamesSet: MutableSet<String> = mutableSetOf<String>()
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val name: String
 )

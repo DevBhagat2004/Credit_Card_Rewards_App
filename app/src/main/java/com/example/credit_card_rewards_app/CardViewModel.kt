@@ -16,6 +16,7 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
     private val _state = MutableStateFlow(BestCardState())
     val state: StateFlow<BestCardState> = _state
 
+
     fun getBest(rewardsNames: String) {
         viewModelScope.launch {
             val cardIds = rewardDao.getMaxValue(rewardsNames)
