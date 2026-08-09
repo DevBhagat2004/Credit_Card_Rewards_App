@@ -80,5 +80,4 @@ class UpdateCardViewModel(application: Application): AndroidViewModel(applicatio
             }
         }
     }
-
 }

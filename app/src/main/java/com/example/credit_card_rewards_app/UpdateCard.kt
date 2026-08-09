@@ -8,34 +8,50 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.material3.Button
 import androidx.compose.material3.TextField
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun UpdateCard(cardId: Int){
 
+    val updateCardViewModel: UpdateCardViewModel = viewModel()
+    val updateCardUIState by updateCardViewModel.state.collectAsStateWithLifecycle()
+    // Get the card and its rewards from db
+    updateCardViewModel.getCard(cardId)
+    updateCardViewModel.getRewards(cardId)
+
     Column(modifier = Modifier
         .fillMaxSize()
     ){
-        var newRewardValues = remember{
-            mutableStateListOf<String>()
-        }
+        Text(text="Change the values in textfield if you want to change it")
+        Text(text = "CardName: ")
+        TextField(
+            value = updateCardUIState.card.name,
+            onValueChange = {updateCardViewModel.updateCardName(it)}
+        )
 
-        for((index,reward) in rewardList.withIndex()){
+        for(reward in updateCardUIState.rewardsList){
             Row(){
-                Text(text = "Reward: "+reward.rewardCategory+" Value: "+reward.rewardValue.toString())
+                Text(text = "Reward: "+reward.rewardCategory)
                 TextField(
-                    value = newRewardValues[index],
-                    onValueChange = {newRewardValues[index]=it}
+                    value = reward.rewardValue.toString(),
+                    onValueChange = {
+                        val newMap: MutableMap<Int, String> = updateCardUIState.toUpdateRewardMap
+                        newMap[reward.rewardId] = it
+                        updateCardViewModel.fillUpdateRewardMap(newMap)
+                    }
                 )
             }
         }
 
-        Button(onClick={}){
+        Button(onClick={updateCardViewModel.deleteCardandRewards(updateCardUIState.card)}){
             Text(text = "Delete Card")
         }
 
-        Button(onClick={}){
+        Button(onClick={updateCardViewModel.insertUpdatedCard(updateCardUIState.card)
+                        updateCardViewModel.updateRewards(updateCardUIState.toUpdateRewardMap)
+        }){
             Text(text = "UpdateCard")
         }
     }
