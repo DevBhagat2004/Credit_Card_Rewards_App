@@ -1,13 +1,18 @@
 package com.example.credit_card_rewards_app
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
 
 @Dao
 interface Cards_Dao {
+
+    @Insert
+    suspend fun insertCard (card: Card): Long
+
     @Upsert
-    suspend fun upsertCard(card: Card)
+    suspend fun upsertCard(card: Card): Long
 
     @Delete
     suspend fun deleteCard(card: Card)

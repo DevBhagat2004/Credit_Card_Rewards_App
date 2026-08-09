@@ -1,58 +1,63 @@
 package com.example.credit_card_rewards_app
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.credit_card_rewards_app.ui.theme.Credit_Card_Rewards_AppTheme
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
 fun AddCard(rewardCategories: List<String>){
+    val addCardViewModel: AddCardViewModel = viewModel()
+    val addCardUIState by addCardViewModel.state.collectAsStateWithLifecycle()
 
     val rewardValues = remember{
         mutableStateListOf<String>()
     }
 
-
     Column (
         modifier = Modifier
             .fillMaxSize()
     ){
+        Text(text = "Please Enter Card Name")
+        TextField (
+            value = addCardUIState.cardName,
+            onValueChange = {
+                addCardViewModel.addCardName(it)
+            }
+        )
+
         Text(text = "Enter values for given category leave blank if not valid")
 
-        for ((index,category) in rewardCategories.withIndex()){
+        addCardViewModel.getRewardNames()
+
+        addCardViewModel.makeRewardMap(addCardUIState.rewardNames)
+
+        for ( (k,v) in addCardUIState.rewardMap){
             Row() {
-                Text(text = category)
+                Text(text = k)
 
                 TextField(
-                    value = rewardValues[index],
-                    onValueChange = { rewardValues[index] = it}
+                    value = v,
+                    onValueChange = {
+                        val newMap: MutableMap<String, String> = addCardUIState.rewardMap
+                        newMap[k] = it
+                        addCardViewModel.updateRewardMap(newMap)
+                    }
                 )
             }
 
-
-        Button(onClick= {}){
+        Button(onClick= {addCardViewModel.addCardandRewards(addCardUIState.cardName, addCardUIState.rewardMap)}){
             Text(text = "Submit",
                  fontSize = 16.sp)
             }
