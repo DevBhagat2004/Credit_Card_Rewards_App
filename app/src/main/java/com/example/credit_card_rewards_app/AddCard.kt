@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-
 @Composable
 fun AddCard(rewardCategories: List<String>){
     val addCardViewModel: AddCardViewModel = viewModel()
@@ -61,7 +60,6 @@ fun AddCard(rewardCategories: List<String>){
             Text(text = "Submit",
                  fontSize = 16.sp)
             }
-
         }
     }
 }

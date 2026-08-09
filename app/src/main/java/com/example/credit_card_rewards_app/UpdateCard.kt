@@ -12,7 +12,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 
 @Composable
-fun UpdateCard(rewardList: List<Reward>){
+fun UpdateCard(cardId: Int){
 
     Column(modifier = Modifier
         .fillMaxSize()

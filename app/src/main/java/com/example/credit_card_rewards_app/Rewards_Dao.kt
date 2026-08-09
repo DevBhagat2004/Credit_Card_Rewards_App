@@ -17,6 +17,14 @@ interface Rewards_Dao {
     @Delete
     suspend fun deleteReward(reward: Reward)
 
+    @Query("DELETE FROM Reward WHERE cardId = (:cardId)")
+    suspend fun deleteRewardsByCardId(cardId: Int)
+    @Query("SELECT  * FROM Reward WHERE cardId = (:cardId)")
+    suspend fun getCardRewards(cardId: Int): MutableList<Reward>
+
     @Query("SELECT cardId FROM Reward WHERE rewardCategory = :category AND rewardValue = (SELECT MAX(rewardValue) FROM Reward WHERE rewardCategory = :category)")
     suspend fun getMaxValue(category: String): List<Int>
+
+    @Query("SELECT * FROM Reward WHERE rewardId = (:rewardId)")
+    suspend fun getRewardByRewardId(rewardId: Int): Reward
 }

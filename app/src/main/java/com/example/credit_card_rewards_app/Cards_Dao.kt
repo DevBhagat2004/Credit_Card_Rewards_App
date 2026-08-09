@@ -20,6 +20,9 @@ interface Cards_Dao {
     @Query ("SELECT * from Card WHERE cardId IN (:ids)")
     suspend fun selectCard(ids: List<Int>): List<Card>
 
+    @Query("SELECT * FROM Card WHERE cardId = (:id)")
+    suspend fun getOneCard(id: Int): Card
+
     @Query("SELECT * FROM Card")
     suspend fun getAllCards() : List<Card>
 }
