@@ -24,11 +24,7 @@ fun AddCard(navController: NavController){
 
 
     LaunchedEffect(Unit) {
-        addCardViewModel.getRewardNames()
-    }
-
-    LaunchedEffect(addCardUIState.rewardNames) {
-        addCardViewModel.makeRewardMap(addCardUIState.rewardNames)
+        addCardViewModel.initializeData()
     }
     Column (
         modifier = Modifier
@@ -50,16 +46,17 @@ fun AddCard(navController: NavController){
 
                 TextField(
                     value = v,
-                    onValueChange = {
-                        val newMap: MutableMap<String, String> = addCardUIState.rewardMap.toMutableMap()
-                        newMap[k] = it
+                    onValueChange = { newValue ->
+                        val newMap = addCardUIState.rewardMap.toMutableMap()
+                        newMap[k] = newValue
                         addCardViewModel.updateRewardMap(newMap)
                     }
                 )
             }
         }
-        Button(onClick= {addCardViewModel.addCardandRewards(addCardUIState.cardName, addCardUIState.rewardMap)
-        navController.navigate("HomeScreen")
+        Button(onClick= {
+            addCardViewModel.addCardandRewards(addCardUIState.cardName, addCardUIState.rewardMap)
+            navController.popBackStack()
         }){
             Text(text = "Submit",
                 fontSize = 16.sp)

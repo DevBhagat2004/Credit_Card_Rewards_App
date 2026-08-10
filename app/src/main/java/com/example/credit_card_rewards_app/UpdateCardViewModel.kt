@@ -59,23 +59,22 @@ class UpdateCardViewModel(application: Application): AndroidViewModel(applicatio
         }
     }
 
-    fun fillUpdateRewardMap( newRewardValue: MutableMap<Int, String>){
-        viewModelScope.launch{
-            _state.update{
-                it.copy(toUpdateRewardMap = newRewardValue)
-            }
+    fun fillUpdateRewardMap(rewardId: Int, newValue: String){
+        _state.update{
+            val newMap = it.toUpdateRewardMap.toMutableMap()
+            newMap[rewardId] = newValue
+            it.copy(toUpdateRewardMap = newMap)
         }
     }
 
-    fun updateRewards(updatedValues: MutableMap<Int, String>){
-        for ((k,v ) in updatedValues){
-            viewModelScope.launch {
+    fun updateRewards(updatedValues: Map<Int, String>){
+        viewModelScope.launch {
+            for ((k,v ) in updatedValues){
                 val oldReward = rewardDao.getRewardByRewardId(k)
-
+                val value = v.toDoubleOrNull() ?: 0.0
                 val newReward = oldReward.copy(
-                    rewardValue = v.toDouble()
+                    rewardValue = value
                 )
-
                 rewardDao.upsertReward(newReward)
             }
         }

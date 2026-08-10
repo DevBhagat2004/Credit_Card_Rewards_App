@@ -12,9 +12,18 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
     private val db = AppDatabase.getDatabase(application)
     val cardDao = db.cardDao
     val rewardDao = db.rewardDao
+    val rewardNamesDao = db.rewardNamesDao
 
     private val _state = MutableStateFlow(BestCardState())
     val state: StateFlow<BestCardState> = _state
+
+    fun getRewardNames() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(rewardNames = rewardNamesDao.getAllRewardNames())
+            }
+        }
+    }
 
 
     fun getBest(rewardsNames: String) {

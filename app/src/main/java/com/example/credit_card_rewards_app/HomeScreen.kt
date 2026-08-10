@@ -31,9 +31,9 @@ fun Parent(navController: NavController){
 
         Button(onClick = {navController.navigate("AddCard")}){Text(text = "Add Card", fontSize = 16.sp)}
 
-        Button(onClick = {}){Text(text = "Best Reward Value", fontSize = 16.sp)}
+        Button(onClick = {navController.navigate("BestReward")}){Text(text = "Best Reward Value", fontSize = 16.sp)}
 
-        Button(onClick = {}){Text(text = "Update Card", fontSize = 16.sp)}
+        Button(onClick = {navController.navigate("ShowCard")}){Text(text = "Update Card", fontSize = 16.sp)}
     }
 }
 

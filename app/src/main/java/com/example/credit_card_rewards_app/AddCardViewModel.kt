@@ -27,36 +27,29 @@ class AddCardViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
-    fun getRewardNames(){
+    fun initializeData() {
         viewModelScope.launch {
+            val names = rewardNamesDao.getAllRewardNames()
+            val holdRewardMap = mutableMapOf<String, String>()
+            for (name in names) {
+                holdRewardMap[name] = "0.0"
+            }
             _state.update {
-                it.copy(rewardNames = rewardNamesDao.getAllRewardNames())
+                it.copy(
+                    rewardNames = names,
+                    rewardMap = holdRewardMap
+                )
             }
         }
     }
 
-    fun makeRewardMap(rewardNames: List<String>){
-        val holdRewardMap = mutableMapOf<String, String>()
-
-        for(name in rewardNames){
-            holdRewardMap[name] = "0.0"
-        }
-        viewModelScope.launch{
-            _state.update{
-                it.copy(rewardMap = holdRewardMap)
-            }
+    fun updateRewardMap(newMap: Map<String, String>){
+        _state.update{
+            it.copy(rewardMap = newMap.toMutableMap())
         }
     }
 
-    fun updateRewardMap(newMap: MutableMap<String, String>){
-        viewModelScope.launch{
-            _state.update{
-                it.copy(rewardMap = newMap)
-            }
-        }
-    }
-
-    fun addCardandRewards(cardName: String, rewardMap: MutableMap<String, String>){
+    fun addCardandRewards(cardName: String, rewardMap: Map<String, String>){
         val card = Card(name = cardName)
         viewModelScope.launch{
            val cardId = cardDao.insertCard(card).toInt()
@@ -64,7 +57,8 @@ class AddCardViewModel(application: Application): AndroidViewModel(application) 
             _state.update{it.copy(cardId = cardId)}
 
             for( (k,v) in rewardMap){
-               val reward = Reward(cardId = cardId, rewardCategory = k, rewardValue = v.toDouble())
+                val value = v.toDoubleOrNull() ?: 0.0
+                val reward = Reward(cardId = cardId, rewardCategory = k, rewardValue = value)
 
                 rewardDao.insertReward(reward)
             }

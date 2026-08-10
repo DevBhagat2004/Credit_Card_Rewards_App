@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.material3.Button
 import androidx.compose.material3.TextField
@@ -18,9 +19,11 @@ fun UpdateCard(navController: NavController, cardId: Int){
 
     val updateCardViewModel: UpdateCardViewModel = viewModel()
     val updateCardUIState by updateCardViewModel.state.collectAsStateWithLifecycle()
-    // Get the card and its rewards from db
-    updateCardViewModel.getCard(cardId)
-    updateCardViewModel.getRewards(cardId)
+
+    LaunchedEffect(cardId) {
+        updateCardViewModel.getCard(cardId)
+        updateCardViewModel.getRewards(cardId)
+    }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -35,23 +38,27 @@ fun UpdateCard(navController: NavController, cardId: Int){
         for(reward in updateCardUIState.rewardsList){
             Row(){
                 Text(text = "Reward: "+reward.rewardCategory)
+                val currentText = updateCardUIState.toUpdateRewardMap[reward.rewardId] ?: reward.rewardValue.toString()
                 TextField(
-                    value = reward.rewardValue.toString(),
-                    onValueChange = {
-                        val newMap: MutableMap<Int, String> = updateCardUIState.toUpdateRewardMap
-                        newMap[reward.rewardId] = it
-                        updateCardViewModel.fillUpdateRewardMap(newMap)
+                    value = currentText,
+                    onValueChange = { newValue ->
+                        updateCardViewModel.fillUpdateRewardMap(reward.rewardId, newValue)
                     }
                 )
             }
         }
 
-        Button(onClick={updateCardViewModel.deleteCardandRewards(updateCardUIState.card)}){
+        Button(onClick={
+            updateCardViewModel.deleteCardandRewards(updateCardUIState.card)
+            navController.popBackStack()
+        }){
             Text(text = "Delete Card")
         }
 
-        Button(onClick={updateCardViewModel.insertUpdatedCard(updateCardUIState.card)
-                        updateCardViewModel.updateRewards(updateCardUIState.toUpdateRewardMap)
+        Button(onClick={
+            updateCardViewModel.insertUpdatedCard(updateCardUIState.card)
+            updateCardViewModel.updateRewards(updateCardUIState.toUpdateRewardMap)
+            navController.popBackStack()
         }){
             Text(text = "UpdateCard")
         }

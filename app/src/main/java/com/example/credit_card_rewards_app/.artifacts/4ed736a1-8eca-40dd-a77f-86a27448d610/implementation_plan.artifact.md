@@ -1,20 +1,53 @@
-# Fix KSP Error in RewardNames_Dao
+# Fix State Management and Side Effects
 
-The KSP error `Type of the parameter must be a class annotated with @Entity or a collection/array of it` is caused by the `insertName(name: String)` method in `RewardNames_Dao.kt`. Room's `@Insert` annotation requires the parameter to be an entity class, but `String` is not an entity.
+This plan addresses logic flaws related to Room/Compose state management and improper side-effect handling across multiple screens.
+
+## User Review Required
+
+> [!IMPORTANT]
+> I will be consolidating data initialization into ViewModel functions and ensuring all state updates create new object instances to ensure Compose recomposition works correctly.
 
 ## Proposed Changes
 
-### [Component: Database]
+### [Component: Screens & ViewModels]
 
-#### [MODIFY] [RewardNames_Dao.kt](file:///C:/Users/bhaga/AndroidStudioProjects/Credit_Card_Rewards_App/app/src/main/java/com/example/credit_card_rewards_app/RewardNames_Dao.kt)
+#### [MODIFY] [AddCard.kt](file:///C:/Users/bhaga/AndroidStudioProjects/Credit_Card_Rewards_App/app/src/main/java/com/example/credit_card_rewards_app/AddCard.kt)
+- Consolidate `getRewardNames()` and `makeRewardMap()` into a single `initialize()` call in `LaunchedEffect(Unit)`.
+- Ensure navigation to `HomeScreen` only happens after a successful save.
 
-- Remove the invalid `insertName(name: String)` method which is causing the KSP error.
-- The `insertNames(rewardNames: RewardNames)` method already exists and is correctly used in `AppDatabase.kt`.
+#### [MODIFY] [AddCardViewModel.kt](file:///C:/Users/bhaga/AndroidStudioProjects/Credit_Card_Rewards_App/app/src/main/java/com/example/credit_card_rewards_app/AddCardViewModel.kt)
+- Combine `getRewardNames` and `makeRewardMap` into `initializeData()`.
+- Add safe double parsing in `addCardandRewards` to prevent crashes on invalid input.
+
+#### [MODIFY] [UpdateCard.kt](file:///C:/Users/bhaga/AndroidStudioProjects/Credit_Card_Rewards_App/app/src/main/java/com/example/credit_card_rewards_app/UpdateCard.kt)
+- Move `getCard(cardId)` and `getRewards(cardId)` into `LaunchedEffect(cardId)`.
+- Fix `TextField` for reward values:
+    - Display user input from `toUpdateRewardMap` if present.
+    - Use `toMutableMap()` in `onValueChange` to ensure state updates trigger recomposition.
+- Navigate back after Update/Delete.
+
+#### [MODIFY] [UpdateCardViewModel.kt](file:///C:/Users/bhaga/AndroidStudioProjects/Credit_Card_Rewards_App/app/src/main/java/com/example/credit_card_rewards_app/UpdateCardViewModel.kt)
+- Optimize `updateRewards` to use a single coroutine.
+- Add safe double parsing.
+
+#### [MODIFY] [ShowCard.kt](file:///C:/Users/bhaga/AndroidStudioProjects/Credit_Card_Rewards_App/app/src/main/java/com/example/credit_card_rewards_app/ShowCard.kt)
+- Move `showCard()` call to `LaunchedEffect(Unit)`.
+- Implement navigation to `UpdateCard` when a card is clicked.
+
+#### [MODIFY] [MainActivity.kt](file:///C:/Users/bhaga/AndroidStudioProjects/Credit_Card_Rewards_App/app/src/main/java/com/example/credit_card_rewards_app/MainActivity.kt)
+- Add missing routes for `UpdateCard` and `BestReward`.
+
+#### [MODIFY] [HomeScreen.kt](file:///C:/Users/bhaga/AndroidStudioProjects/Credit_Card_Rewards_App/app/src/main/java/com/example/credit_card_rewards_app/HomeScreen.kt)
+- Implement `onClick` handlers for menu buttons.
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `./gradlew assembleDebug` to verify that the KSP error is resolved and the project builds successfully.
+- Build the project to ensure no compilation errors.
+- I will check if I can add a basic unit test for the ViewModel state logic if time permits.
 
 ### Manual Verification
-- None required as this is a build-time fix.
+- Deploy to a device/emulator.
+- Verify that typing in `AddCard` and `UpdateCard` updates the UI immediately.
+- Verify that navigating between screens works as expected.
+- Verify that invalid input (e.g., "abc" for a reward value) doesn't crash the app.
