@@ -22,34 +22,22 @@ fun Greeting(){
 }
 
 @Composable
-fun Options(buttonText: String){
-    Button(
-        onClick = {},
-    ){
-        Text(
-            text = buttonText,
-            fontSize = 16.sp
-        )
-    }
-}
-
-@Composable
-fun Parent(){
+fun Parent(navController: NavController){
     Column (
         modifier = Modifier
             .fillMaxSize()
     ){
         Greeting()
 
-        Options("Add Card")
+        Button(onClick = {navController.navigate("AddCard")}){Text(text = "Add Card", fontSize = 16.sp)}
 
-        Options("Best Reward Value")
+        Button(onClick = {}){Text(text = "Best Reward Value", fontSize = 16.sp)}
 
-        Options("Update Card")
+        Button(onClick = {}){Text(text = "Update Card", fontSize = 16.sp)}
     }
 }
 
 @Composable
 fun HomeScreen(navController: NavController){
-    Parent()
+    Parent(navController)
 }

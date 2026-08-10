@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
 import androidx.compose.material3.TextField
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -22,6 +23,13 @@ fun AddCard(navController: NavController){
     val addCardUIState by addCardViewModel.state.collectAsStateWithLifecycle()
 
 
+    LaunchedEffect(Unit) {
+        addCardViewModel.getRewardNames()
+    }
+
+    LaunchedEffect(addCardUIState.rewardNames) {
+        addCardViewModel.makeRewardMap(addCardUIState.rewardNames)
+    }
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -36,10 +44,6 @@ fun AddCard(navController: NavController){
 
         Text(text = "Enter values for given category leave blank if not valid")
 
-        addCardViewModel.getRewardNames()
-
-        addCardViewModel.makeRewardMap(addCardUIState.rewardNames)
-
         for ( (k,v) in addCardUIState.rewardMap){
             Row() {
                 Text(text = k)
@@ -47,17 +51,18 @@ fun AddCard(navController: NavController){
                 TextField(
                     value = v,
                     onValueChange = {
-                        val newMap: MutableMap<String, String> = addCardUIState.rewardMap
+                        val newMap: MutableMap<String, String> = addCardUIState.rewardMap.toMutableMap()
                         newMap[k] = it
                         addCardViewModel.updateRewardMap(newMap)
                     }
                 )
             }
-
-        Button(onClick= {addCardViewModel.addCardandRewards(addCardUIState.cardName, addCardUIState.rewardMap)}){
+        }
+        Button(onClick= {addCardViewModel.addCardandRewards(addCardUIState.cardName, addCardUIState.rewardMap)
+        navController.navigate("HomeScreen")
+        }){
             Text(text = "Submit",
-                 fontSize = 16.sp)
-            }
+                fontSize = 16.sp)
         }
     }
 }
