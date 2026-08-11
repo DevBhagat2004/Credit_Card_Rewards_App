@@ -56,6 +56,31 @@ class AddCardViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
+    fun fillRewardCategory(name: String){
+        _state.update{
+            it.copy(newCategory = name)
+        }
+    }
+    fun onNewCategoryAddition(newCategory: String, oldRewardMap: Map<String, String>){
+        viewModelScope.launch{
+            val newReward: RewardNames = RewardNames(name = newCategory)
+            val newRewardMap: MutableMap<String, String> = oldRewardMap.toMutableMap()
+            newRewardMap[newCategory] = ""
+            rewardNamesDao.insertNames(newReward)
+            _state.update{
+                it. copy(rewardMap = newRewardMap,
+                        addNewCategory = false
+                    )
+            }
+        }
+    }
+
+    fun onAddNewCategoryClick(){
+        _state.update{
+           it.copy( addNewCategory = true)
+        }
+    }
+
     fun saveCard(cardName: String, rewardMap: Map<String, String>){
         val card = Card(name = cardName)
         viewModelScope.launch{

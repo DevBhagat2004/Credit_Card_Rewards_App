@@ -4,5 +4,7 @@ data class AddCardState(
     val cardName: String = "",
     val rewardNames: List<String> = emptyList(),
     val rewardMap: Map<String, String> = emptyMap(),
-    val cardId: Int = 0
+    val cardId: Int = 0,
+    val addNewCategory: Boolean = false,
+    val newCategory: String = "",
 )

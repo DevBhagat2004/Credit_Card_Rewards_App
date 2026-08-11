@@ -86,6 +86,32 @@ fun AddCard(navController: NavController) {
                 }
             }
 
+            if (state.addNewCategory){
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    OutlinedTextField(
+                        value = "",
+                        onValueChange = { newValue ->
+                            addCardViewModel.fillRewardCategory(newValue)
+                        },
+                        label = { Text("Category") },
+                        modifier = Modifier.weight(1f),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                    )
+                }
+                Button(
+                    onClick = {
+                        addCardViewModel.onNewCategoryAddition(state.newCategory, state.rewardMap)
+                    },
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+                ) {
+                    Text("Add")
+                }
+            }
+
             Button(
                 onClick = {
                     addCardViewModel.saveCard(state.cardName, state.rewardMap)
@@ -94,6 +120,15 @@ fun AddCard(navController: NavController) {
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
             ) {
                 Text("Save Card")
+            }
+
+            Button(
+                onClick = {
+                    addCardViewModel.onAddNewCategoryClick()
+                },
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+            ) {
+                Text("Add New Category")
             }
         }
     }
