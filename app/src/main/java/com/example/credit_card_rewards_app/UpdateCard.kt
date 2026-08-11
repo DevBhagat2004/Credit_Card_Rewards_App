@@ -32,7 +32,7 @@ fun UpdateCard(navController: NavController, cardId: Int){
         Text(text = "CardName: ")
         TextField(
             value = updateCardUIState.card.name,
-            onValueChange = {updateCardViewModel.updateCardName(it)}
+            onValueChange = {updateCardViewModel.onNameChange(it)}
         )
 
         for(reward in updateCardUIState.rewardsList){
@@ -42,25 +42,28 @@ fun UpdateCard(navController: NavController, cardId: Int){
                 TextField(
                     value = currentText,
                     onValueChange = { newValue ->
-                        updateCardViewModel.fillUpdateRewardMap(reward.rewardId, newValue)
+                        updateCardViewModel.onRewardValueChange(reward.rewardId, newValue)
                     }
                 )
             }
         }
 
         Button(onClick={
-            updateCardViewModel.deleteCardandRewards(updateCardUIState.card)
+            updateCardViewModel.deleteCard(updateCardUIState.card)
             navController.popBackStack()
         }){
             Text(text = "Delete Card")
         }
 
         Button(onClick={
-            updateCardViewModel.insertUpdatedCard(updateCardUIState.card)
-            updateCardViewModel.updateRewards(updateCardUIState.toUpdateRewardMap)
+            updateCardViewModel.saveChanges(updateCardUIState.card, updateCardUIState.toUpdateRewardMap)
             navController.popBackStack()
         }){
             Text(text = "UpdateCard")
+        }
+
+        Button(onClick = {navController.popBackStack()}){
+            Text(text="Back")
         }
     }
 

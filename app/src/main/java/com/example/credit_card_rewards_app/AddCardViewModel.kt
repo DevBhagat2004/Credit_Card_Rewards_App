@@ -19,7 +19,7 @@ class AddCardViewModel(application: Application): AndroidViewModel(application) 
     val state : StateFlow<AddCardState> = _state
 
 
-    fun addCardName(name: String){
+    fun onNameChange(name: String){
         viewModelScope.launch{
             _state.update{
                 it.copy(cardName = name)
@@ -43,13 +43,13 @@ class AddCardViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
-    fun updateRewardMap(newMap: Map<String, String>){
+    fun onRewardValueChange(newMap: Map<String, String>){
         _state.update{
             it.copy(rewardMap = newMap.toMutableMap())
         }
     }
 
-    fun addCardandRewards(cardName: String, rewardMap: Map<String, String>){
+    fun saveCard(cardName: String, rewardMap: Map<String, String>){
         val card = Card(name = cardName)
         viewModelScope.launch{
            val cardId = cardDao.insertCard(card).toInt()

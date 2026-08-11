@@ -35,7 +35,7 @@ class UpdateCardViewModel(application: Application): AndroidViewModel(applicatio
         }
     }
 
-    fun updateCardName(newName: String){
+    fun onNameChange(newName: String){
         viewModelScope.launch{
             _state.update{
                 it.copy(card = it.card.copy(name = newName))
@@ -43,13 +43,21 @@ class UpdateCardViewModel(application: Application): AndroidViewModel(applicatio
         }
     }
 
-    fun insertUpdatedCard(card: Card){
+    fun saveChanges(card: Card, updatedValues: Map<Int, String>){
         viewModelScope.launch{
             cardDao.upsertCard(card)
+            for ((k,v ) in updatedValues){
+                val oldReward = rewardDao.getRewardByRewardId(k)
+                val value = v.toDoubleOrNull() ?: 0.0
+                val newReward = oldReward.copy(
+                    rewardValue = value
+                )
+                rewardDao.upsertReward(newReward)
+            }
         }
     }
 
-    fun deleteCardandRewards(card: Card){
+    fun deleteCard(card: Card){
         viewModelScope.launch{
            val id  = card.cardId
 
@@ -59,24 +67,11 @@ class UpdateCardViewModel(application: Application): AndroidViewModel(applicatio
         }
     }
 
-    fun fillUpdateRewardMap(rewardId: Int, newValue: String){
+    fun onRewardValueChange(rewardId: Int, newValue: String){
         _state.update{
             val newMap = it.toUpdateRewardMap.toMutableMap()
             newMap[rewardId] = newValue
             it.copy(toUpdateRewardMap = newMap)
-        }
-    }
-
-    fun updateRewards(updatedValues: Map<Int, String>){
-        viewModelScope.launch {
-            for ((k,v ) in updatedValues){
-                val oldReward = rewardDao.getRewardByRewardId(k)
-                val value = v.toDoubleOrNull() ?: 0.0
-                val newReward = oldReward.copy(
-                    rewardValue = value
-                )
-                rewardDao.upsertReward(newReward)
-            }
         }
     }
 }

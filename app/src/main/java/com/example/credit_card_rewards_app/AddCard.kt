@@ -34,7 +34,7 @@ fun AddCard(navController: NavController){
         TextField (
             value = addCardUIState.cardName,
             onValueChange = {
-                addCardViewModel.addCardName(it)
+                addCardViewModel.onNameChange(it)
             }
         )
 
@@ -49,16 +49,23 @@ fun AddCard(navController: NavController){
                     onValueChange = { newValue ->
                         val newMap = addCardUIState.rewardMap.toMutableMap()
                         newMap[k] = newValue
-                        addCardViewModel.updateRewardMap(newMap)
+                        addCardViewModel.onRewardValueChange(newMap)
                     }
                 )
             }
         }
         Button(onClick= {
-            addCardViewModel.addCardandRewards(addCardUIState.cardName, addCardUIState.rewardMap)
+            addCardViewModel.saveCard(addCardUIState.cardName, addCardUIState.rewardMap)
             navController.popBackStack()
         }){
             Text(text = "Submit",
+                fontSize = 16.sp)
+        }
+
+        Button(onClick= {
+            navController.popBackStack()
+        }){
+            Text(text = "Back",
                 fontSize = 16.sp)
         }
     }

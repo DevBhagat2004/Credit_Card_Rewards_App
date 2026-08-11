@@ -35,6 +35,10 @@ fun ShowCard(navController: NavController){
                 Text(text = card.name)
             }
         }
+
+        Button(onClick={navController.popBackStack()}) {
+            Text(text="Back")
+        }
     }
 
 }

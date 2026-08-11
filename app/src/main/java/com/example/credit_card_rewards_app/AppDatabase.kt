@@ -36,7 +36,7 @@ abstract class AppDatabase: RoomDatabase() {
 
                             CoroutineScope(Dispatchers.IO).launch{
                                 val database = getDatabase(context)
-                                val myList = listOf("Gas", "Grocery", "Dining", "Online")
+                                val myList = listOf("Gas", "Grocery", "Dining", "Online", "General", "Entertainment")
 
                                 for (myname in myList) {
                                     val rewardName: RewardNames = RewardNames(name= myname)
