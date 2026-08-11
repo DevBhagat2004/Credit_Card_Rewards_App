@@ -29,10 +29,15 @@ class AddCardViewModel(application: Application): AndroidViewModel(application) 
                             holdRewardMap[name] = "0.0"
                         }
                         holdRewardMap
-                    } else {
+                    }
+                    else if (currentState.newCategory!=""&&!currentState.rewardMap.containsKey(currentState.newCategory)) {
+                        val holdRewardMap = currentState.rewardMap.toMutableMap()
+                        holdRewardMap[currentState.newCategory] = "0.0"
+                        holdRewardMap
+                    }
+                    else {
                         currentState.rewardMap
                     }
-
                         currentState.copy(
                             rewardNames = names,
                             rewardMap = newRewardMap
