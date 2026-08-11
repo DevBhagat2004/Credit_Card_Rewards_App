@@ -1,8 +1,8 @@
 package com.example.credit_card_rewards_app
 
 data class AddCardState(
-    var cardName: String = "",
-    val rewardNames: MutableList<String> = mutableListOf(),
-    var rewardMap: MutableMap<String, String> = mutableMapOf(),
+    val cardName: String = "",
+    val rewardNames: List<String> = emptyList(),
+    val rewardMap: Map<String, String> = emptyMap(),
     val cardId: Int = 0
 )

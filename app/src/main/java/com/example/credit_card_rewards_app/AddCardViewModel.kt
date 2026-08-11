@@ -18,27 +18,34 @@ class AddCardViewModel(application: Application): AndroidViewModel(application) 
 
     val state : StateFlow<AddCardState> = _state
 
+    init {
+        viewModelScope.launch {
+            rewardNamesDao.getAllRewardNames().collect { names ->
+                _state.update { currentState ->
+                    // Initialize rewardMap only if it's currently empty
+                    val newRewardMap = if (currentState.rewardMap.isEmpty()) {
+                        val holdRewardMap = mutableMapOf<String, String>()
+                        for (name in names) {
+                            holdRewardMap[name] = "0.0"
+                        }
+                        holdRewardMap
+                    } else {
+                        currentState.rewardMap
+                    }
+
+                        currentState.copy(
+                            rewardNames = names,
+                            rewardMap = newRewardMap
+                        )
+                }
+            }
+        }
+    }
 
     fun onNameChange(name: String){
         viewModelScope.launch{
             _state.update{
                 it.copy(cardName = name)
-            }
-        }
-    }
-
-    fun initializeData() {
-        viewModelScope.launch {
-            val names = rewardNamesDao.getAllRewardNames()
-            val holdRewardMap = mutableMapOf<String, String>()
-            for (name in names) {
-                holdRewardMap[name] = "0.0"
-            }
-            _state.update {
-                it.copy(
-                    rewardNames = names,
-                    rewardMap = holdRewardMap
-                )
             }
         }
     }

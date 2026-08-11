@@ -1,8 +1,8 @@
-# Tasks: Logic-First Cleanup and UI Simplification
+# Tasks: Simple and Clean UI Refinement
 
-- [x] Refactor `AddCardViewModel.kt` (renaming methods).
-- [x] Refactor `UpdateCardViewModel.kt` (renaming and consolidating logic).
-- [x] Simplify `BestReward.kt` UI while keeping logic.
-- [x] Update `AddCard.kt` to match ViewModel changes.
-- [x] Update `UpdateCard.kt` to match ViewModel changes.
-- [x] Verify build and functionality.
+- [x] Refine `HomeScreen.kt` with `Scaffold` and centered layout.
+- [x] Refine `AddCard.kt` with `Scaffold` and `OutlinedTextField`.
+- [x] Refine `ShowCard.kt` with `Scaffold` and `LazyColumn`.
+- [x] Refine `UpdateCard.kt` with `Scaffold` and consistent inputs.
+- [x] Refine `BestReward.kt` with `Scaffold` and structured results.
+- [x] Verify build and visual consistency.

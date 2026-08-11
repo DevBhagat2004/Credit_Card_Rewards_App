@@ -17,10 +17,10 @@ class BestRewardViewModel(application: Application) : AndroidViewModel(applicati
     private val _state = MutableStateFlow(BestRewardState())
     val state: StateFlow<BestRewardState> = _state
 
-    fun getRewardNames() {
+    init {
         viewModelScope.launch {
-            _state.update {
-                it.copy(rewardNames = rewardNamesDao.getAllRewardNames())
+            rewardNamesDao.getAllRewardNames().collect { names ->
+                _state.update { it.copy(rewardNames = names) }
             }
         }
     }

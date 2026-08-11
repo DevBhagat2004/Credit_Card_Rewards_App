@@ -1,28 +1,29 @@
-# Walkthrough - Logic-First Cleanup and UI Simplification
+# Walkthrough - Simple and Clean UI Refinement
 
-I have refactored the project to focus on clean data flow and naming, while simplifying the UI of the `BestReward` screen.
+I have refined the app's UI to be clean and professional while keeping the code concise and adhering to the "not too fancy" requirement. All screens now share a consistent structure and better spacing.
 
-## Changes
+## Key Improvements
 
-### 1. Renamed to Event-Driven Actions
-Renamed methods in `AddCardViewModel` and `UpdateCardViewModel` to better reflect user intent and follow an event-driven pattern:
-- `addCardName` / `updateCardName` $\rightarrow$ `onNameChange`
-- `updateRewardMap` / `fillUpdateRewardMap` $\rightarrow$ `onRewardValueChange`
+### 1. Consistent Navigation Header
+Added a `TopAppBar` within a `Scaffold` to every screen. This provides a clear title for the current view and a standard "Back" navigation button (using `Icons.AutoMirrored.Filled.ArrowBack`).
 
-### 2. Consolidated Database Operations
-In `UpdateCardViewModel`, I merged `insertUpdatedCard` and `updateRewards` into a single `saveChanges()` method. This ensures that the UI only needs to trigger one action to persist all changes, making the code more robust and easier to understand.
+### 2. Improved Form Layouts
+In `AddCard` and `UpdateCard`, I replaced basic `TextField`s with `OutlinedTextField`s for a more modern look. I also:
+- Added proper labels and spacing between fields.
+- Enabled the **decimal numeric keyboard** for reward values.
+- Added a **scrollable container** to handle long lists of reward categories.
 
-### 3. Simplified BestReward UI
-Reverted the `BestReward` screen to a simple `Column` layout to focus on the core logic:
-- Retained the `selectedCategory` highlighting logic.
-- Retained the `recommendedCards` filtering logic.
-- Removed complex Material 3 components (chips, cards) to keep the focus on the data flow.
+### 3. Structured Lists
+Updated `ShowCard` and `BestReward` to use `LazyColumn` and `ElevatedCard`. This gives each card entry a subtle elevation and better separation from the background.
+
+### 4. Centered Home Screen
+The `HomeScreen` is now centered, making it easier to use on larger devices and providing a cleaner "landing" experience.
+
+## Technical Details
+- **Material 3**: Leveraged M3 `Scaffold`, `TopAppBar`, and `ElevatedCard` for a consistent design system.
+- **Icons**: Added `material-icons-core` dependency to support standard navigation icons.
+- **Keyboard Optimization**: Used `KeyboardOptions(keyboardType = KeyboardType.Decimal)` for all reward value inputs.
 
 ## Verification Results
-
-### Automated Tests
-- Executed `gradlew app:assembleDebug`: **Build Successful**.
-
-### Logic Check
-- Verified that all renames were applied consistently across ViewModels and Composables.
-- Verified that the consolidated `saveChanges` method correctly updates both the card and its rewards.
+- **Build Status**: Successful (`gradlew app:assembleDebug`).
+- **Visual Check**: Consistent headers, improved spacing, and functional back navigation across all screens.

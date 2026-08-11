@@ -3,6 +3,7 @@ package com.example.credit_card_rewards_app
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RewardNames_Dao {
@@ -10,5 +11,5 @@ interface RewardNames_Dao {
     suspend fun insertNames(rewardNames: RewardNames)
 
     @Query("SELECT name FROM RewardNames")
-    suspend fun getAllRewardNames() : MutableList <String>
+    fun getAllRewardNames() : Flow<List<String>>
 }

@@ -1,43 +1,70 @@
 package com.example.credit_card_rewards_app
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting(){
-    Text(text = "Please select one option",
-        color = Color.Blue,
-        fontSize = 30.sp)
+fun HomeScreen(navController: NavController) {
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("Card Rewards") },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            )
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Manage your card rewards effectively",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 32.dp)
+            )
 
-}
+            ElevatedButton(
+                onClick = { navController.navigate("AddCard") },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+            ) {
+                Text("Add New Card")
+            }
 
-@Composable
-fun Parent(navController: NavController){
-    Column (
-        modifier = Modifier
-            .fillMaxSize()
-    ){
-        Greeting()
+            ElevatedButton(
+                onClick = { navController.navigate("BestReward") },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+            ) {
+                Text("Best Reward Value")
+            }
 
-        Button(onClick = {navController.navigate("AddCard")}){Text(text = "Add Card", fontSize = 16.sp)}
-
-        Button(onClick = {navController.navigate("BestReward")}){Text(text = "Best Reward Value", fontSize = 16.sp)}
-
-        Button(onClick = {navController.navigate("ShowCard")}){Text(text = "Update Card", fontSize = 16.sp)}
+            ElevatedButton(
+                onClick = { navController.navigate("ShowCard") },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+            ) {
+                Text("Update Card")
+            }
+        }
     }
-}
-
-@Composable
-fun HomeScreen(navController: NavController){
-    Parent(navController)
 }
