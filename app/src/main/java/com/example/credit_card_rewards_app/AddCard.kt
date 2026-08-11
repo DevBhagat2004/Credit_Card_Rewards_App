@@ -93,13 +93,12 @@ fun AddCard(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     OutlinedTextField(
-                        value = "",
+                        value = state.newCategory,
                         onValueChange = { newValue ->
                             addCardViewModel.fillRewardCategory(newValue)
                         },
                         label = { Text("Category") },
                         modifier = Modifier.weight(1f),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                     )
                 }
                 Button(

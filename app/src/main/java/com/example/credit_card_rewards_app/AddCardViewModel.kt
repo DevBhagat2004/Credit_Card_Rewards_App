@@ -62,8 +62,10 @@ class AddCardViewModel(application: Application): AndroidViewModel(application) 
     }
 
     fun fillRewardCategory(name: String){
-        _state.update{
-            it.copy(newCategory = name)
+        viewModelScope.launch {
+            _state.update {
+                it.copy(newCategory = name)
+            }
         }
     }
     fun onNewCategoryAddition(newCategory: String, oldRewardMap: Map<String, String>){
@@ -74,7 +76,8 @@ class AddCardViewModel(application: Application): AndroidViewModel(application) 
             rewardNamesDao.insertNames(newReward)
             _state.update{
                 it. copy(rewardMap = newRewardMap,
-                        addNewCategory = false
+                          addNewCategory = false,
+                           newCategory = ""
                     )
             }
         }
