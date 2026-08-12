@@ -15,10 +15,10 @@ This application allows users to add their credit card names, reward categories,
 
 ## App Screenshots
 
-![The homescreen](images/image1.png)
-![The credit card add screen](images/image2.png)
-![The result screen](images/image3.png)
-![Another result screen for other category](images/image4.png)
+<img src="images/image1.png" width="300" alt="The homescreen">
+<img src="images/image2.png" width="300" alt="The credit card add screen">
+<img src="images/image3.png" width="300" alt="The result screen">
+<img src="images/image4.png" width="300" alt="Another result screen for other category">
 
 ## Technical Overview
 
