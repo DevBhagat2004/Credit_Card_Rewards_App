@@ -13,6 +13,13 @@ This application allows users to add their credit card names, reward categories,
 - Edit card names or reward values whenever they change.
 - Delete cards and their reward data from the app.
 
+## App Screenshots
+
+![The homescreen](images/image1.png)
+![The credit card add screen](images/image2.png)
+![The result screen](images/image3.png)
+![Another result screen for other category](images/image4.png)
+
 ## Technical Overview
 
 - This is an Android application built using Kotlin.
