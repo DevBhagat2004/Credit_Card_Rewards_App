@@ -77,7 +77,7 @@ fun AddCard(navController: NavController) {
                         onValueChange = { newValue ->
                             val newMap = state.rewardMap.toMutableMap()
                             newMap[category] = newValue
-                            addCardViewModel.onRewardValueChange(newMap)
+                            addCardViewModel.onRewardValueChange(newMap, category, newValue)
                         },
                         label = { Text("Value") },
                         modifier = Modifier.weight(1f),

@@ -26,13 +26,13 @@ class AddCardViewModel(application: Application): AndroidViewModel(application) 
                     val newRewardMap = if (currentState.rewardMap.isEmpty()) {
                         val holdRewardMap = mutableMapOf<String, String>()
                         for (name in names) {
-                            holdRewardMap[name] = "0.0"
+                            holdRewardMap[name] = ""
                         }
                         holdRewardMap
                     }
                     else if (currentState.newCategory!=""&&!currentState.rewardMap.containsKey(currentState.newCategory)) {
                         val holdRewardMap = currentState.rewardMap.toMutableMap()
-                        holdRewardMap[currentState.newCategory] = "0.0"
+                        holdRewardMap[currentState.newCategory] = ""
                         holdRewardMap
                     }
                     else {
@@ -55,9 +55,16 @@ class AddCardViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
-    fun onRewardValueChange(newMap: Map<String, String>){
+    fun onRewardValueChange(newMap: MutableMap<String, String>, categoryName: String, categoryValue: String){
+        if(categoryName=="General"){
+            for (k in newMap.keys.toList()){
+                if (k!="General"&&newMap[k]==""){
+                    newMap[k]= categoryValue
+                }
+            }
+        }
         _state.update{
-            it.copy(rewardMap = newMap.toMutableMap())
+            it.copy(rewardMap = newMap)
         }
     }
 
